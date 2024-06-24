@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Input Form</title>
+    <link type="text/css" rel="stylesheet" href="{% static 'css/style.css' %}"/>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    <div class="form-container" style="margin-left: -5px;">
+        <h1>Student Info</h1>
+        <div class="form-container-2">
+            <form action="" method="post" id="prediction-form">
+                {% csrf_token %}
+                <div class="form-row">
+                    <label for="feature1">Age :</label>
+                    <select id="feature1" name="feature1">
+                        <option value="">Select Age</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="feature2">Gender :</label>
+                    <select id="feature2" name="feature2">
+                        <option value="">Select Gender</option>
+                        <option value="0">Male</option>
+                        <option value="1">Female</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="feature3">Ethnicity :</label>
+                    <select id="feature3" name="feature3">
+                        <option value="">Select Ethnicity</option>
+                        <option value="0">Caucasian</option>
+                        <option value="1">African American</option>
+                        <option value="2">Asian</option>
+                        <option value="3">Other</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="feature4">Parental Education :</label>
+                    <select id="feature4" name="feature4">
+                        <option value="">Select Parental Education</option>
+                        <option value="0">None</option>
+                        <option value="1">High School</option>
+                        <option value="2">Some College</option>
+                        <option value="3">Bachelor's</option>
+                        <option value="4">Higher</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="feature5">Study Time Weekly :</label>
+                    <input type="number" placeholder="Ranging From 0 to 20" id="feature5" name="feature5" min="0" max="20">
+                </div>
+                <div class="form-row">
+                    <label for="feature6">Absences :</label>
+                    <input type="number" placeholder="Ranging From 0 to 30" id="feature6" name="feature6" min="0" max="30">
+                </div>
+                <div class="form-row">
+                    <label for="feature7">Tutoring :</label>
+                    <select id="feature7" name="feature7">
+                        <option value="">Select Answer</option>
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="feature8">Parental Support :</label>
+                    <select id="feature8" name="feature8">
+                        <option value="">Select Parental Support</option>
+                        <option value="0">None</option>
+                        <option value="1">Low</option>
+                        <option value="2">Moderate</option>
+                        <option value="3">High</option>
+                        <option value="4">Very High</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="feature9">Extra curricular :</label>
+                    <select id="feature9" name="feature9">
+                        <option value="">Select Answer</option>
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="feature10">Sports :</label>
+                    <select id="feature10" name="feature10">
+                        <option value="">Select Answer</option>
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="feature11">Music :</label>
+                    <select id="feature11" name="feature11">
+                        <option value="">Select Answer</option>
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="feature12">Volunteering :</label>
+                    <select id="feature12" name="feature12">
+                        <option value="">Select Answer</option>
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+    </div>
+    <button class="arrow-button" onclick="submitForm()">Predict</button>
+    <div class="form-container" style="margin-left: -5px;">
+        <h1>Grade Class Prediction</h1>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Grade Class</th>
+                        <th>GPA Range</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>A</td>
+                        <td>GPA &gt;= 3.5</td>
+                    </tr>
+                    <tr>
+                        <td>B</td>
+                        <td>3.0 &lt;= GPA &lt; 3.5</td>
+                    </tr>
+                    <tr>
+                        <td>C</td>
+                        <td>2.5 &lt;= GPA &lt; 3.0</td>
+                    </tr>
+                    <tr>
+                        <td>D</td>
+                        <td>2.0 &lt;= GPA &lt; 2.5</td>
+                    </tr>
+                    <tr>
+                        <td>F</td>
+                        <td>GPA &lt; 2.0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <h1 id="predictionOutput" class="prediction-output"></h1>   
+        </div>
+    </div>
+    <span class="sticky-span">By: Karim Raouf</span>
+    <script>
+        document.getElementById('prediction-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+            console.log("Form submitted");
+    
+            if (validateForm()) {
+                const outputEL = document.getElementById("predictionOutput");
+                const formData = new FormData(this);
+    
+                $.ajax({
+                    type: 'POST',
+                    url: `prediction/`,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken'), // Include the CSRF token
+                    },
+                    success: function(data) {
+                        if (data.success) {
+                            outputEL.style.display = "block";
+                            outputEL.textContent = `Student Grade Class is "${data.prediction}"`;
+                            outputEL.style.fontFamily = "'Playfair Display', serif";
+                        }
+                    },
+                    error: function(error) {
+                        // Handle any errors that occurred during the request
+                        console.error('Error:', error);
+                    }
+                });
+            } else {
+                console.log("Validation failed: please fill all fields correctly");
+            }
+        });
+    
+        function validateForm() {
+            let isValid = true;
+            const form = document.getElementById('prediction-form');
+            const elements = form.elements;
+    
+            for (let i = 0; i < elements.length; i++) {
+                if (elements[i].tagName.toLowerCase() === 'select' || elements[i].tagName.toLowerCase() === 'input') {
+                    if (elements[i].value === '') {
+                        isValid = false;
+                        elements[i].style.border = '2px solid red';
+                    } else {
+                        elements[i].style.border = '';
+                    }
+                }
+            }
+    
+            // Additional validation for specific fields
+            const studyTime = document.getElementById('feature5');
+            const absences = document.getElementById('feature6');
+    
+            if (studyTime.value === '' || studyTime.value < 0 || studyTime.value > 20) {
+                isValid = false;
+                studyTime.style.border = '2px solid red';
+            } else {
+                studyTime.style.border = '';
+            }
+    
+            if (absences.value === '' || absences.value < 0 || absences.value > 30) {
+                isValid = false;
+                absences.style.border = '2px solid red';
+            } else {
+                absences.style.border = '';
+            }
+    
+            return isValid;
+        }
+    
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+    
+        function submitForm() {
+            const form = document.getElementById('prediction-form');
+            form.dispatchEvent(new Event('submit')); // Programmatically trigger the submit event
+            console.log("Submit button clicked");
+        }
+    </script>
+    
+       
+    
+    
+</body>
+</html>
